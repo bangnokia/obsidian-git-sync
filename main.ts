@@ -1,11 +1,12 @@
 import { App, Plugin, PluginSettingTab, Setting, Notice } from 'obsidian';
+import { SettingsTab } from './settings';
 
 interface PluginSettings {
-	privateKeyPath: string|null;
+	privateKeyPath: string;
 }
 
 const DEFAULT_SETTINGS: Partial<PluginSettings> = {
-	privateKeyPath: '~/ssh/id_rsa'
+	privateKeyPath: ''
 }
 
 export default class ObsidianGitSyncPlugin extends Plugin {
@@ -13,8 +14,9 @@ export default class ObsidianGitSyncPlugin extends Plugin {
 
 	async onload() {
 		console.log('loading Obsidian Git Sync plugin');
+		await this.loadSettings();
 
-		this.addSettingTab(new ObsidianGitSyncSettingTab(this.app, this));
+		this.addSettingTab(new SettingsTab(this.app, this));
 	}
 
 	async loadSettings() {
